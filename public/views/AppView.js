@@ -2,7 +2,8 @@ var AppView = Backbone.View.extend({
   el: $('body'),
 
   events: {
-    'click .submit-beer': 'createBeer'
+    'click .submit-beer': 'createBeer',
+    'click #out': 'logout'
   },
 
   initialize: function () {
@@ -17,6 +18,7 @@ var AppView = Backbone.View.extend({
     this.$reviewsContainer = this.$('.reviews-container');
     this.$registerContainer = this.$('.register-container');
     this.$loginContainer = this.$('.login-container');
+    this.$logoutView = this.$('.logout-view');
 
     this.listenTo(this.model.get('beers'), 'add', this.addBeer);
     this.listenTo(this.model.get('beers'), 'reset', this.renderBeers);
@@ -30,11 +32,26 @@ var AppView = Backbone.View.extend({
   renderView: function () {
     var view = this.model.get('view');
 
+    if(this.model.get('current_user') === null){
+      $('#reg').addClass('showa');
+      $('#log').addClass('showa');
+      $('#out').removeClass('showa');
+      $('.navbar-brand').html('');
+    }else{
+      $('#reg').removeClass('showa');
+      $('#log').removeClass('showa');
+      $('#out').addClass('showa');
+      console.log(this.model.get('current_user').get('username'))
+      $('.navbar-brand').html(this.model.get('current_user').get('username'));
+      
+    }
+
     var viewMap = {
       'beers': this.$beersContainer,
       'reviews': this.$reviewsContainer,
       'register': this.$registerContainer,
-      'login': this.$loginContainer
+      'login': this.$loginContainer,
+      'logout': this.$logoutView
     }
 
     // if it's not working, can be change to each bult-in func
@@ -70,5 +87,19 @@ var AppView = Backbone.View.extend({
     this.model.get('beers').each(function (m) {
       this.addBeer(m);
     }, this);
+  },
+
+  logout: function (){
+    $.ajax({
+    method: "GET",
+    url: '/logout',
+    success: function(data) {
+      appModel.set('current_user', null);
+      appModel.set('view', 'beers');
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(textStatus);
+    }
+  });
   }
 });

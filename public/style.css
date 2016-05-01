@@ -54,12 +54,12 @@ p {
   display: block;
 }
 
-.reviews-container, .beers-container, .register-container, .login-container {
+.reviews-container, .beers-container, .register-container, .login-container, .logout-view, #reg, #log, #out {
   display: none;
 }
 
-.show {
-  display: block;
+.show, .showa {
+  display: block !important;
 }
 
 .review {

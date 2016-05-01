@@ -171,4 +171,9 @@ app.post('/login', passport.authenticate('login'), function (req, res) {
   res.json(req.user)
 });
 
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.send('Logged out!');
+});
+
 app.listen(8000);
