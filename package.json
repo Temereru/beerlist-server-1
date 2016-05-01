@@ -14,8 +14,9 @@
     "bootstrap": "^3.3.6",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
+    "font-awesome": "^4.6.1",
     "handlebars": "^4.0.5",
     "jquery": "^2.2.3",
-    "mongoose": "^4.4.12"
+    "mongoose": "^4.4.14"
   }
 }

@@ -5,8 +5,8 @@ var AppModel = Backbone.Model.extend({
 
       current_beer: null,
 
-      // either true or false
-      show_reviews: false
+      // set a view to whatever view used
+      view: 'beers'
     }
   },
 
