@@ -12,13 +12,31 @@
   <title>BeerList</title>
 </head>
 <body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid navbar-left">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#"></a>
+      </div>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li id="reg" class="showa">
+        <a href="#/register" class="view-manager">Sign Up<i class="fa fa-cog"></i></a>
+      </li>
+      <li id="log" class="showa">
+        <a href="#/login" class="view-manager">Sign In<i class="fa fa-cog"></i></a>
+      </li>
+      <li id="out">
+        <a href="#/logout" class="view-manager">Log Out<i class="fa fa-cog"></i></a>
+      </li>
+    </ul>
+  </nav>
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <div class="header">
           <h1><i class="fa fa-beer"></i> BeerList!</h1>
         </div>
-
+        
         <div class="beers-container show">
           <div class="beer-list"></div>
 
@@ -69,6 +87,10 @@
             </div>
             <button class="btn btn-primary login">Login</button>
           </form>
+        </div>
+
+        <div class="logout-view">
+          <h1>Logging Out</h1>
         </div>
       </div>
     </div>

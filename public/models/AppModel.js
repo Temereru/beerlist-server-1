@@ -6,7 +6,9 @@ var AppModel = Backbone.Model.extend({
       current_beer: null,
 
       // set a view to whatever view used
-      view: 'beers'
+      view: 'beers',
+
+      current_user: null
     }
   },
 
