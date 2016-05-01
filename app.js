@@ -147,4 +147,28 @@ app.get('/currentUser', function (req, res) {
   res.send(req.user);
 });
 
+passport.use('login', new LocalStrategy(function (username, password, done) {
+  User.findOne({ 'username': username }, function (err, user) {
+    // In case of any error return
+    if (err) {
+      console.log('Error in Login: ' + err);
+      return done(err);
+    }
+
+    if(user !== null){
+      if (user.password === password) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    }else{
+      return done(null, false);
+    }
+  });
+}));
+
+app.post('/login', passport.authenticate('login'), function (req, res) {
+  res.json(req.user)
+});
+
 app.listen(8000);

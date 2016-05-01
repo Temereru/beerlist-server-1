@@ -3,6 +3,7 @@ var appModel = new AppModel();
 var appView = new AppView({ model: appModel });
 
 var registerView = new RegisterView();
+var loginView = new LoginView();
 
 var beerRouter = new BeerRouter();
 

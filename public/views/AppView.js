@@ -16,6 +16,7 @@ var AppView = Backbone.View.extend({
     this.$beersContainer = this.$('.beers-container');
     this.$reviewsContainer = this.$('.reviews-container');
     this.$registerContainer = this.$('.register-container');
+    this.$loginContainer = this.$('.login-container');
 
     this.listenTo(this.model.get('beers'), 'add', this.addBeer);
     this.listenTo(this.model.get('beers'), 'reset', this.renderBeers);
@@ -32,7 +33,8 @@ var AppView = Backbone.View.extend({
     var viewMap = {
       'beers': this.$beersContainer,
       'reviews': this.$reviewsContainer,
-      'register': this.$registerContainer
+      'register': this.$registerContainer,
+      'login': this.$loginContainer
     }
 
     // if it's not working, can be change to each bult-in func
