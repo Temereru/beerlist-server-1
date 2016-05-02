@@ -12,12 +12,10 @@ var ReviewView = Backbone.View.extend({
   },
 
   removeReview: function () {
-    if(appModel.get('current_user')){
       this.model.destroy({success: function(model, response) {
         console.log(model);
         console.log(response);
       }});
-    } 
   },
 
   render: function () {

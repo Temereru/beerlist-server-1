@@ -83,14 +83,12 @@ var AppView = Backbone.View.extend({
   },
 
   createBeer: function () {
-    if(this.model.get('current_user')){
       this.model.get('beers').create({
         name: this.$nameInput.val(),
         style: this.$styleInput.val(),
         abv: this.$abvInput.val(),
         image_url: this.$imgUrl.val(),
       }, {wait: true});
-    }  
   },
 
   addBeer: function (beer) {

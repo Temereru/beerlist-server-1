@@ -18,11 +18,9 @@ var BeerView = Backbone.View.extend({
   },
 
   toggleEditMode: function () {
-    if(appModel.get('current_user')){
       this.model.set('edit_mode', !this.model.get('edit_mode'));
 
       this.$nameInput.focus();
-    }
   },
 
   removeBeer: function () {
