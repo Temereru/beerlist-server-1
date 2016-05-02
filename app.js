@@ -24,13 +24,22 @@ app.use(expressSession({secret: 'mySecretCode'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+var auth = function (req, res, next) {
+  if(req.isAuthenticated()){
+    next();
+  }else{
+    res.send('You are not an authenticated user');
+  }
+};
+
+
 app.get('/beers', function (req, res) {
   Beer.find(function (error, beers) {
     res.send(beers);
   });
 });
 
-app.post('/beers', function (req, res, next) {
+app.post('/beers', auth(), function (req, res, next) {
   var beer = new Beer(req.body);
 
   beer.save(function(err, beer) {
@@ -40,7 +49,7 @@ app.post('/beers', function (req, res, next) {
   });
 });
 
-app.put('/beers/:id',  function(req, res, next) {
+app.put('/beers/:id', auth(),  function(req, res, next) {
   Beer.findById(req.params.id, function (error, beer) {
     beer.name = req.body.name;
 
@@ -52,7 +61,7 @@ app.put('/beers/:id',  function(req, res, next) {
   });
 });
 
-app.delete('/beers/:id', function (req, res) {
+app.delete('/beers/:id', auth(), function (req, res) {
   Beer.findById(req.params.id, function (error, beer) {
     if (error) {
       res.status(500);
@@ -65,7 +74,7 @@ app.delete('/beers/:id', function (req, res) {
   });
 });
 
-app.post('/beers/:id/reviews', function(req, res, next) {
+app.post('/beers/:id/reviews', auth(), function(req, res, next) {
   Beer.findById(req.params.id, function(err, beer) {
     if (err) { return next(err); }
 
@@ -82,7 +91,7 @@ app.post('/beers/:id/reviews', function(req, res, next) {
 });
 
 
-app.delete('/beers/:beer/reviews/:review', function(req, res, next) {
+app.delete('/beers/:beer/reviews/:review', auth(), function(req, res, next) {
   Beer.findById(req.params.beer, function (err, beer) {
     for (var i = 0; i < beer.reviews.length; i ++) {
       if (beer.reviews[i]["_id"] == req.params.review) {
