@@ -16,7 +16,6 @@ var RegisterView = Backbone.View.extend({
     user.save({}, {
       success: function (user) {
         console.log(user.get('username') + ' is successfully registered');
-        // var currentUser = new UserModel(user)
         appModel.set('current_user', user);
         beerRouter.navigate('/', true);
       },
@@ -24,6 +23,6 @@ var RegisterView = Backbone.View.extend({
         console.log(user);
         console.log(response);
       }
-    });
+    }, {wait: true});
   }
 });

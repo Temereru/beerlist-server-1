@@ -148,7 +148,7 @@ app.get('/currentUser', function (req, res) {
 });
 
 passport.use('login', new LocalStrategy(function (username, password, done) {
-  User.findOne({ 'username': username }, function (err, user) {
+  User.findOne({ 'username': username, 'password': password }, function (err, user) {
     // In case of any error return
     if (err) {
       console.log('Error in Login: ' + err);
@@ -156,11 +156,7 @@ passport.use('login', new LocalStrategy(function (username, password, done) {
     }
 
     if(user !== null){
-      if (user.password === password) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
+      return done(null, user);
     }else{
       return done(null, false);
     }

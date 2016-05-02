@@ -16,10 +16,12 @@ var BeerDetailView = Backbone.View.extend({
   },
 
   createReview: function () {
-    this.model.get('reviews').create({
-      name: this.$nameInput.val(),
-      text: this.$notesInput.val(),
-    }, {wait: true});
+    if(appModel.get('current_user')){
+      this.model.get('reviews').create({
+        name: appModel.get('current_user').get('username'),
+        text: this.$notesInput.val(),
+      }, {wait: true});
+    }
   },
 
   addReview: function (review) {
@@ -40,9 +42,14 @@ var BeerDetailView = Backbone.View.extend({
     this.$notesInput = this.$('#review-notes-input');
 
     this.$reviewList = this.$('.reviews-list');
+    this.$remove = this.$('.remove');
 
     this.renderReviews();
-
+    if(appModel.get('current_user') === null){
+      this.$remove.removeClass('showa');
+    }else{
+      this.$remove.addClass('showa');
+    }
     return this;
   }
 });

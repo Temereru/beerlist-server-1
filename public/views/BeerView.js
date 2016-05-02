@@ -14,19 +14,24 @@ var BeerView = Backbone.View.extend({
     this.listenTo(this.model, 'destroy', this.remove);
     this.listenTo(this.model, 'change:edit_mode', this.renderEdit);
     this.listenTo(this.model, 'change:name', this.render);
+    this.listenTo(appModel, 'change', this.toggleButtons);
   },
 
   toggleEditMode: function () {
-    this.model.set('edit_mode', !this.model.get('edit_mode'));
+    if(appModel.get('current_user')){
+      this.model.set('edit_mode', !this.model.get('edit_mode'));
 
-    this.$nameInput.focus();
+      this.$nameInput.focus();
+    }
   },
 
   removeBeer: function () {
-    this.model.destroy({ success: function(model, response) {
-      console.log(model);
-      console.log(response);
-    }});
+    if(appModel.get('current_user')){
+      this.model.destroy({ success: function(model, response) {
+        console.log(model);
+        console.log(response);
+      }});
+    }
   },
 
   renderEdit: function () {
@@ -55,9 +60,21 @@ var BeerView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(this.template(this.model.toJSON()));
+    this.$edit = this.$('.edit');
+    this.$remove = this.$('.remove');
 
     this.$nameInput = this.$('.edit-mode');
-
+    if(appModel.get('current_user') === null){
+      this.$edit.removeClass('showa');
+      this.$remove.removeClass('showa');
+    }else{
+      this.$edit.addClass('showa');
+      this.$remove.addClass('showa');
+    }
     return this;
+  },
+
+  toggleButtons: function () {
+
   }
 })
