@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var expressSession = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
+var crypto = require('crypto');
 
 mongoose.connect('mongodb://localhost/beers');
 
@@ -12,7 +13,6 @@ var Review = require("./models/ReviewModel");
 var User = require("./models/UserModel");
 
 var app = express();
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -120,10 +120,12 @@ passport.use('register', new LocalStrategy(function (username, password, done) {
       // if there is no user with that matches
       // create the user
       var newUser = new User();
-
+      var hash = crypto.createHash('md5');
+      hash.update(password);
+      var hashed = hash.digest('hex');
       // set the user's local credentials
       newUser.username = username;
-      newUser.password = password;    // Note: Should create a hash out of this plain password!
+      newUser.password = hashed;    // Note: Should create a hash out of this plain password!
 
       // save the user
       newUser.save(function (err) {
@@ -148,7 +150,10 @@ app.get('/currentUser', function (req, res) {
 });
 
 passport.use('login', new LocalStrategy(function (username, password, done) {
-  User.findOne({ 'username': username }, function (err, user) {
+  var hash = crypto.createHash('md5');
+  hash.update(password);
+  var hashed = hash.digest('hex');
+  User.findOne({ 'username': username, 'password': hashed }, function (err, user) {
     // In case of any error return
     if (err) {
       console.log('Error in Login: ' + err);
@@ -156,11 +161,7 @@ passport.use('login', new LocalStrategy(function (username, password, done) {
     }
 
     if(user !== null){
-      if (user.password === password) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
+      return done(null, user);
     }else{
       return done(null, false);
     }

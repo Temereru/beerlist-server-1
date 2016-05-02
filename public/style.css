@@ -54,7 +54,8 @@ p {
   display: block;
 }
 
-.reviews-container, .beers-container, .register-container, .login-container, .logout-view, #reg, #log, #out {
+.reviews-container, .beers-container, .register-container, .login-container,
+ .logout-view, #reg, #log, #out, .beer-form, .edit, .remove, .review-form {
   display: none;
 }
 

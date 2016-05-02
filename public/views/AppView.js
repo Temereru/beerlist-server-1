@@ -19,9 +19,15 @@ var AppView = Backbone.View.extend({
     this.$registerContainer = this.$('.register-container');
     this.$loginContainer = this.$('.login-container');
     this.$logoutView = this.$('.logout-view');
+    this.$reg = this.$('#reg');
+    this.$log = this.$('#log');
+    this.$out = this.$('#out');
+    this.$beerForm = this.$('.beer-form');
+    this.navbarBrand = this.$('.navbar-brand');
 
     this.listenTo(this.model.get('beers'), 'add', this.addBeer);
     this.listenTo(this.model.get('beers'), 'reset', this.renderBeers);
+    this.listenTo(this.model, 'change', this.renderView);
 
     this.listenTo(this.model, 'change:view', this.renderView);
     this.listenTo(this.model, 'change:current_beer', this.renderDetailView);
@@ -33,16 +39,23 @@ var AppView = Backbone.View.extend({
     var view = this.model.get('view');
 
     if(this.model.get('current_user') === null){
-      $('#reg').addClass('showa');
-      $('#log').addClass('showa');
-      $('#out').removeClass('showa');
-      $('.navbar-brand').html('');
+      this.$reg.addClass('showa');
+      this.$log.addClass('showa');
+      this.$out.removeClass('showa');
+      this.$beerForm.removeClass('showa');
+      $('.edit').removeClass('showa');
+      $('.remove').removeClass('showa');
+      $('.review-form').removeClass('showa');
+      this.navbarBrand.html('');
     }else{
-      $('#reg').removeClass('showa');
-      $('#log').removeClass('showa');
-      $('#out').addClass('showa');
-      console.log(this.model.get('current_user').get('username'))
-      $('.navbar-brand').html(this.model.get('current_user').get('username'));
+      this.$reg.removeClass('showa');
+      this.$log.removeClass('showa');
+      this.$out.addClass('showa');
+      this.$beerForm.addClass('showa');
+      $('.edit').addClass('showa');
+      $('.remove').addClass('showa');
+      $('.review-form').addClass('showa');
+      this.navbarBrand.html(this.model.get('current_user').get('username'));
       
     }
 
@@ -70,12 +83,14 @@ var AppView = Backbone.View.extend({
   },
 
   createBeer: function () {
-    this.model.get('beers').create({
-      name: this.$nameInput.val(),
-      style: this.$styleInput.val(),
-      abv: this.$abvInput.val(),
-      image_url: this.$imgUrl.val()
-    }, {wait: true});
+    if(this.model.get('current_user')){
+      this.model.get('beers').create({
+        name: this.$nameInput.val(),
+        style: this.$styleInput.val(),
+        abv: this.$abvInput.val(),
+        image_url: this.$imgUrl.val(),
+      }, {wait: true});
+    }  
   },
 
   addBeer: function (beer) {

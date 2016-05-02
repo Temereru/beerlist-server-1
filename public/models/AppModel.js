@@ -12,6 +12,15 @@ var AppModel = Backbone.Model.extend({
     }
   },
 
+  url: '/currentUser',
+
+  parse: function (response) {
+    if (response) {
+      var user = new UserModel(response);
+      this.set('current_user', user);
+    }
+  },
+
   initialize: function () {
     this.on('change:current_beer', this._setReviewsUrl);
   },
